@@ -18,6 +18,8 @@ from celery.utils.time import maybe_make_aware
 
 from . import routes as _routes
 
+from branch_dictionary import branch_coverage
+
 __all__ = ('AMQP', 'Queues', 'task_message')
 
 #: earliest date supported by time.mktime.
@@ -271,6 +273,9 @@ class AMQP:
     def TaskConsumer(self, channel, queues=None, accept=None, **kw):
         if accept is None:
             accept = self.app.conf.accept_content
+            branch_coverage["TaskConsumer1"] = True
+        else:
+            branch_coverage["TaskConsumer2"] = True
         return self.Consumer(
             channel, accept=accept,
             queues=queues or list(self.queues.consume_from.values()),
@@ -433,7 +438,10 @@ class AMQP:
 
     def _verify_seconds(self, s, what):
         if s < INT_MIN:
+            branch_coverage["VerifySeconds1"] = True
             raise ValueError(f'{what} is out of range: {s!r}')
+        else:
+            branch_coverage["VerifySeconds2"] = True
         return s
 
     def _create_task_sender(self):

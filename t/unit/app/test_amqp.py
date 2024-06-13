@@ -9,6 +9,15 @@ from celery.app.amqp import Queues, utf8dict
 from celery.utils.time import to_utc
 
 
+class test__verify_seconds:
+    
+    def test_seconds_must_be_over_int_min(self, app):
+        with pytest.raises(ValueError):
+            app.amqp._verify_seconds(-2147483648 - 1, "TestValue")
+    def test_seconds_are_over_int_min(self, app):
+        assert app.amqp._verify_seconds(-2147483648, "TestValue") == -2147483648
+
+
 class test_TaskConsumer:
 
     def test_accept_content(self, app):
