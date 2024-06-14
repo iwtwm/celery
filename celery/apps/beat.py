@@ -75,6 +75,7 @@ class Beat:
         if not isinstance(self.loglevel, numbers.Integral):
             self.loglevel = LOG_LEVELS[self.loglevel.upper()]
 
+    #1
     def run(self) -> None:
         if not self.quiet:
             print(str(self.colored.cyan(
@@ -83,6 +84,7 @@ class Beat:
         self.set_process_title()
         self.start_scheduler()
 
+    #2
     def setup_logging(self, colorize: bool | None = None) -> None:
         if colorize is None and self.no_color is not None:
             colorize = not self.no_color

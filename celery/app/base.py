@@ -43,6 +43,8 @@ from .registry import TaskRegistry
 from .utils import (AppPickler, Settings, _new_key_to_old, _old_key_to_new, _unpickle_app, _unpickle_app_v2, appstr,
                     bugreport, detect_settings)
 
+from branch_dictionary import branch_coverage
+
 __all__ = ('Celery',)
 
 logger = get_logger(__name__)
@@ -379,19 +381,26 @@ class Celery:
         finally:
             celery.params[0].default = None
 
+#2
     def worker_main(self, argv=None):
         """Run :program:`celery worker` using `argv`.
 
         Uses :data:`sys.argv` if `argv` is not specified.
         """
         if argv is None:
+            branch_coverage["worker_main1"] = True
             argv = sys.argv
+        else:
+            branch_coverage["worker_main2"] = True
 
         if 'worker' not in argv:
+            branch_coverage["worker_main3"] = True
             raise ValueError(
                 "The worker sub-command must be specified in argv.\n"
                 "Use app.start() to programmatically start other commands."
             )
+        else:
+            branch_coverage["worker_main4"] = True
 
         self.start(argv=argv)
 

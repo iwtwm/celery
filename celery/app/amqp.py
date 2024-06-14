@@ -273,9 +273,6 @@ class AMQP:
     def TaskConsumer(self, channel, queues=None, accept=None, **kw):
         if accept is None:
             accept = self.app.conf.accept_content
-            branch_coverage["TaskConsumer1"] = True
-        else:
-            branch_coverage["TaskConsumer2"] = True
         return self.Consumer(
             channel, accept=accept,
             queues=queues or list(self.queues.consume_from.values()),
@@ -438,10 +435,7 @@ class AMQP:
 
     def _verify_seconds(self, s, what):
         if s < INT_MIN:
-            branch_coverage["VerifySeconds1"] = True
             raise ValueError(f'{what} is out of range: {s!r}')
-        else:
-            branch_coverage["VerifySeconds2"] = True
         return s
 
     def _create_task_sender(self):
@@ -616,8 +610,12 @@ class AMQP:
         # so don't need the dispatcher to be enabled.
         return self.app.events.Dispatcher(enabled=False)
 
+#1
     def _handle_conf_update(self, *args, **kwargs):
         if ('task_routes' in kwargs or 'task_routes' in args):
+            branch_coverage["_handle_conf_update1"] = True
             self.flush_routes()
             self.router = self.Router()
+        else:
+            branch_coverage["_handle_conf_update2"] = True
         return

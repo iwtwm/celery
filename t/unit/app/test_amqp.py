@@ -9,7 +9,11 @@ from celery.app.amqp import Queues, utf8dict
 from celery.utils.time import to_utc
 
 
-class test__verify_seconds:
+class test__handle_conf_update:
+    def test_conf_update_no_args(self, app):
+        
+
+    def test_conf_update_task_routes(self, app):
     
     def test_seconds_must_be_over_int_min(self, app):
         with pytest.raises(ValueError):

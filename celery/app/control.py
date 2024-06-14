@@ -88,7 +88,7 @@ class Inspect:
         self.limit = limit
         self.pattern = pattern
         self.matcher = matcher
-
+    #2
     def _prepare(self, reply):
         if reply:
             by_node = flatten_reply(reply)
@@ -271,6 +271,7 @@ class Inspect:
         return self._request('registered', taskinfoitems=taskinfoitems)
     registered_tasks = registered
 
+#1
     def ping(self, destination=None):
         """Ping all (or specific) workers.
 
