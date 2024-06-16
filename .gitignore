@@ -27,7 +27,6 @@ celery/tests/cover/
 cover/
 .vagrant/
 .cache/
-htmlcov/
 coverage.xml
 test.db
 pip-wheel-metadata/
