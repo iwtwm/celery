@@ -7,3 +7,8 @@ branch_coverage = {
     "worker_main3": False,     # 'worker' not in argv
     "worker_main4": False      # else branch
 }
+
+branch_totals = {
+    "_handle_conf_update": 2,
+    "worker_main": 4
+}
