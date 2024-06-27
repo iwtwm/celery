@@ -598,6 +598,16 @@ class test_App:
 
         mocked_celery.main.assert_called_with(
             args=['worker', '--help'], standalone_mode=False)
+        
+    @patch('celery.bin.celery.celery')
+    def test_worker_main_no_args(self, mocked_celery):
+        with pytest.raises(ValueError):
+            self.app.worker_main(argv = None)
+    
+    @patch('celery.bin.celery.celery')
+    def test_worker_main_invalid_arg(self, mocked_celery):
+        with pytest.raises(ValueError):
+            self.app.worker_main(argv=['test'])
 
     def test_config_from_envvar(self, monkeypatch):
         monkeypatch.setenv("CELERYTEST_CONFIG_OBJECT", 't.unit.app.test_app')
