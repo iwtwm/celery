@@ -1,6 +1,6 @@
 import pytest
 
-from celery.utils.text import abbr, abbrtask, ensure_newlines, indent, pretty, truncate
+from celery.utils.text import abbr, abbrtask, ensure_newlines, indent, join, pretty, truncate, fill_paragraphs
 
 RANDTEXT = """\
 The quick brown
@@ -79,3 +79,28 @@ def test_abbrtask(s, maxsize, expected):
 
 def test_pretty():
     assert pretty(('a', 'b', 'c'))
+
+@pytest.mark.parametrize('l, sep, expected', [
+    (['a', 'b', 'c'], '\n', 'a\nb\nc'),
+    (['a', 'b', 'c'], ', ', 'a, b, c'),
+    (['a', '', 'c'], '\n', 'a\nc'),
+    (['', '', ''], '\n', ''),
+    ([], '\n', ''),
+    (['', 'b', '', 'd'], '\n', 'b\nd'),
+    (['a'], '\n', 'a'),
+])
+
+def test_join(l, sep, expected):
+    print("Testing Join() function", l, sep, expected)
+    assert join(l, sep) == expected
+
+@pytest.mark.parametrize("s, width, sep, expected", [
+    ("Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 20, "\n", "Lorem ipsum dolor\nsit amet,\nconsectetur\nadipiscing elit."),
+    ("Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 15, "\n", "Lorem ipsum\ndolor sit amet,\nconsectetur\nadipiscing\nelit."),
+    ("First paragraph.\n\nSecond paragraph.", 30, "\n", "First paragraph.\n\nSecond paragraph."),
+    ("First paragraph.\n\nSecond paragraph.", 20, "\n", "First paragraph.\n\nSecond paragraph."),
+    ("", 10, "\n", ""),
+])
+def test_fill_paragraphs(s, width, sep, expected):
+    assert fill_paragraphs(s, width, sep) == expected
+    
