@@ -5,8 +5,22 @@ import pytest
 from kombu import Exchange, Queue
 
 from celery import uuid
-from celery.app.amqp import Queues, utf8dict
+from celery.app.amqp import Queues, utf8dict, AMQP
 from celery.utils.time import to_utc
+
+class test__handle_conf_update:
+
+    def test_conf_update_task_routes(self, app):
+        with patch.object(AMQP, 'flush_routes') as mock_flush_routes, patch.object(AMQP, 'Router') as mock_router:
+            app.amqp._handle_conf_update("task_routes")
+            mock_flush_routes.assert_called_once()
+            mock_router.assert_called_once()
+
+    def test_conf_update_no_args(self, app):
+        with patch.object(AMQP, 'flush_routes') as mock_flush_routes, patch.object(AMQP, 'Router') as mock_router:
+            app.amqp._handle_conf_update()
+            mock_flush_routes.assert_not_called()
+            mock_router.assert_not_called()
 
 
 class test_TaskConsumer:
